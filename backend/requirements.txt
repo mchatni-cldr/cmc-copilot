@@ -1,0 +1,9 @@
+crewai
+crewai-tools
+flask
+flask-cors
+python-dotenv
+pydantic
+anthropic
+numpy
+pandas
