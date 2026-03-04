@@ -6,7 +6,10 @@ load_dotenv()
 class Config:
     ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
-    FLASK_PORT = int(os.getenv('FLASK_PORT', 5001))
+    FLASK_PORT = int(
+        os.getenv('CDSW_APP_PORT') or
+        os.getenv('FLASK_PORT', 5001)
+    )
     
     # LLM Configuration
     LLM_MODEL = "claude-sonnet-4-20250514"

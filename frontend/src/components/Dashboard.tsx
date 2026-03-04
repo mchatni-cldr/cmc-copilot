@@ -9,7 +9,6 @@ import OutputViewer from './OutputViewer';
 export default function Dashboard() {
   const [batchInfo, setBatchInfo] = useState<BatchInfo | null>(null);
   const [investigating, setInvestigating] = useState(false);
-  const [investigationId, setInvestigationId] = useState<string | null>(null);
   const [investigationStatus, setInvestigationStatus] = useState<InvestigationStatus | null>(null);
   const [showResults, setShowResults] = useState(false);
 
@@ -43,7 +42,6 @@ export default function Dashboard() {
 
     try {
       const response = await apiService.startInvestigation(batchInfo.batch_id);
-      setInvestigationId(response.investigation_id);
 
       // Start polling for status updates
       apiService.pollInvestigationStatus(response.investigation_id, (status) => {
@@ -62,7 +60,6 @@ export default function Dashboard() {
 
   const resetDemo = () => {
     setInvestigating(false);
-    setInvestigationId(null);
     setInvestigationStatus(null);
     setShowResults(false);
   };

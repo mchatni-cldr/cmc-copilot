@@ -5,7 +5,7 @@ interface OutputViewerProps {
   onReset: () => void;
 }
 
-export default function OutputViewer({ report, onReset }: OutputViewerProps) {
+export default function OutputViewer({ report: _report, onReset }: OutputViewerProps) {
   // Parse the report output (this is a simplified version)
   // In production, you'd parse the actual crew output format
   

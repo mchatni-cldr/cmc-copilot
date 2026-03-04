@@ -1,13 +1,17 @@
 # ============================================================
 # FILE: backend/app.py (FIXED - Returns correct investigation_id)
 # ============================================================
-from flask import Flask, jsonify, request
+import os
+from flask import Flask, jsonify, request, send_from_directory, send_file
 from flask_cors import CORS
 from config import Config
 from services.orchestration_service import InvestigationService
 from services.data_service import DataService
 
-app = Flask(__name__)
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+STATIC_FOLDER = os.path.join(REPO_ROOT, 'frontend', 'dist')
+
+app = Flask(__name__, static_folder=None)  # We manage static serving ourselves
 CORS(app)
 
 # Initialize services
@@ -92,10 +96,19 @@ def debug_investigations():
         }
     return jsonify(investigations)
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve_spa(path):
+    """Serve React app — real files get served directly, all other routes get index.html"""
+    if path != '' and os.path.exists(os.path.join(STATIC_FOLDER, path)):
+        return send_from_directory(STATIC_FOLDER, path)
+    return send_file(os.path.join(STATIC_FOLDER, 'index.html'))
+
 if __name__ == '__main__':
-    print(f"[APP] Starting CMC Co-Pilot API on port {Config.FLASK_PORT}")
+    port = os.getenv('CDSW_APP_PORT')
+    print(f"[APP] Starting CMC Co-Pilot API on port {port}")
     app.run(
-        host='0.0.0.0',
-        port=Config.FLASK_PORT,
+        host='127.0.0.1',
+        port=port,
         debug=(Config.FLASK_ENV == 'development')
     )

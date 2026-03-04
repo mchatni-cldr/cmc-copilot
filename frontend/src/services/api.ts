@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { InvestigationStatus, BatchInfo } from '@/types/agent.types';
+import { InvestigationStatus } from '@/types/agent.types';
+import { BatchInfo } from '@/types/domain.types';
 
 const API_BASE_URL = '/api';
 
